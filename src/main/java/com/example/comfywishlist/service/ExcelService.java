@@ -22,7 +22,7 @@ public class ExcelService {
         sheet.setColumnWidth(4, 8000);
 
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"ID", "Title", "URL", "Price", "Date Created"};
+        String[] headers = {"ID", "Title", "URL", "Price", "Creation Date"};
         CellStyle headerCellStyle = workbook.createCellStyle();
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);

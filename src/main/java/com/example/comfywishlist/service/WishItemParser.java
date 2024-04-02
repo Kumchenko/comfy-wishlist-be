@@ -1,6 +1,6 @@
 package com.example.comfywishlist.service;
 
-import com.example.comfywishlist.entity.Price;
+import com.example.comfywishlist.entity.WishParseResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,17 +16,31 @@ public class WishItemParser {
 
     private static final Logger logger = LoggerFactory.getLogger(WishItemParser.class);
 
-    public Price parseWishItem(String url) throws IOException, ParseException {
-        Document doc = Jsoup.connect(url).get();
-        Element price = doc.selectFirst("div.price__current");
+    public WishParseResult parseByUrl(String url) throws IOException, ParseException {
+        String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 OPR/108.0.0.0";
+        Document doc = Jsoup.connect(url).userAgent(userAgent).get();
+        return parse(doc, url);
+    }
 
-        if (price != null) {
+    public WishParseResult parseByHtml(String html) throws IOException, ParseException {
+        Document doc = Jsoup.parse(html);
+        return parse(doc, "html");
+    }
+
+    private WishParseResult parse(Document doc, String source) throws ParseException {
+        Element price = doc.selectFirst("div.price__current");
+        Element name = doc.selectFirst("h1.gen-tab__name");
+
+        if (price != null && name != null) {
             String cleanPrice = price.text().replaceAll("[^\\d.]", "");
             double convertedPrice = Double.parseDouble(cleanPrice);
-            logger.info("Parsed price {} from url: {}", convertedPrice, url);
-            return new Price(convertedPrice);
+
+            String cleanName = name.text().trim();
+
+            logger.info("Parsed price {} from {}", convertedPrice, source);
+            return new WishParseResult(convertedPrice, cleanName);
         } else {
-            throw new ParseException("Can't get price from url: " + url, 1);
+            throw new ParseException("Can't get data from the provided " + source, 1);
         }
     }
 }

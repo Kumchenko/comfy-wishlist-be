@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @ToString
-public class Price {
-
+public class WishParseResult {
     private double price;
+    private String name;
 }
