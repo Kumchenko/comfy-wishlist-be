@@ -1,7 +1,5 @@
 # Про проект
 
-Demo: [Live Demo on Vercel](https://comfy-wishlist-fe.vercel.app)
-
 Front-end Repo: [comfy-wishlish-fe](https://github.com/Kumchenko/comfy-wishlist-fe)
 
 Author: [Kyrylo Kumchenko](https://github.com/Kumchenko)
